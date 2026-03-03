@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Slot</title>
+</head>
+<body>
+    <h1>Create Appointment Slot</h1>
+
+    <div th:if="${error}" th:text="${error}" style="color:red;"></div>
+
+    <form th:action="@{/teacher/slots}" th:object="${slot}" method="post">
+        <div>
+            <label>Title</label>
+            <input th:field="*{title}" placeholder="Enter slot title" />
+        </div>
+
+        <div>
+            <label>Type</label>
+            <select th:field="*{type}" title="Select appointment type">
+                <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
+            </select>
+        </div>
+
+        <div>
+            <label>Start Time</label>
+            <input type="datetime-local" th:field="*{startTime}" title="Select start time" />
+        </div>
+
+        <div>
+            <label>End Time</label>
+            <input type="datetime-local" th:field="*{endTime}" title="Select end time" />
+        </div>
+
+        <div>
+            <label>Location</label>
+            <input th:field="*{location}" placeholder="Enter location" title="Enter appointment location" />
+        </div>
+
+        <div>
+            <label>Capacity (for GROUP)</label>
+            <input type="number" min="1" th:field="*{capacity}" title="Enter capacity for group appointments" />
+        </div>
+
+        <button type="submit">Create</button>
+    </form>
+    <p><a th:href="@{/teacher/slots}">Back</a></p>
+</body>
+</html>

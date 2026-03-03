@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Teacher Slots</title>
+    </head>
+
+    <body>
+        <h1>Teacher: Appoint Slots</h1>
+        <p><a href="@{/teacher/slots/new}">Create new slot</a></p>
+
+        <table border="1" cellpadding="6">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Location</th>
+                    <th>Capacity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="s : ${slots}">
+                    <td th:text="${s.title}"></td>
+                    <td th:text="${s.type}"></td>
+                    <td th:text="${#temporals.format(s.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#temporals.format(s.endTime, 'yyyy-MM-Ddd HH:mm')}"></td>
+                    <td th:text="${s.location}"></td>
+                    <td th:text="${s.capacity}"></td>
+                    <td>
+                        <form th:action="@{/teacher/slots/{id}/cancel(id=${s.id})}" method="post">
+                            <button type="submit">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(slots)}">
+                    <td colspan="7">No upcoming slots</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            <form th:action="@{/logout}" method="post" style="display:inline";>
+                <button type="submit">Logout</button>
+            </form>
+        </p>
+    </body>
+</html>
