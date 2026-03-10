@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="appointment-slots")
+@Table(name="appointment_slots")
 @Getter
 @Setter
 @NoArgsConstructor

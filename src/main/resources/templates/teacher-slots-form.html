@@ -11,6 +11,7 @@
     <div th:if="${error}" th:text="${error}" style="color:red;"></div>
 
     <form th:action="@{/teacher/slots}" th:object="${slot}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <div>
             <label>Title</label>
             <input th:field="*{title}" placeholder="Enter slot title" />
@@ -39,7 +40,7 @@
         </div>
 
         <div>
-            <label>Capacity (for GROUP)</label>
+            <label>Capacity (for GROUP only)</label>
             <input type="number" min="1" th:field="*{capacity}" title="Enter capacity for group appointments" />
         </div>
 

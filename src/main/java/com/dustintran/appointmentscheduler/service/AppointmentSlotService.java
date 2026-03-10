@@ -18,7 +18,8 @@ public class AppointmentSlotService {
 
     public List<AppointmentSlot> upcomingActiveList() {
         return slots.findByStatusAndStartTimeAfterOrderByStartTimeAsc(
-            AppointmentSlot.Status.ACTIVE, LocalDateTime.now());
+            AppointmentSlot.Status.ACTIVE,
+            LocalDateTime.now());
     }
 
     public AppointmentSlot create(AppointmentSlot slot) {
@@ -34,12 +35,16 @@ public class AppointmentSlotService {
         if (!slot.getEndTime().isAfter(slot.getStartTime())) {
             throw new IllegalArgumentException("End time must be after start time");
         }
+        if (!slot.getStartTime().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Start time must be in the future");
+        }
 
         if (slot.getType() == AppointmentSlot.Type.INDIVIDUAL) {
             slot.setCapacity(1);
-        }
-        else {
-            if (slot.getCapacity() < 2) slot.setCapacity(2);
+        } else {
+            if (slot.getCapacity() < 2) {
+                slot.setCapacity(10);
+            }
         }
 
         slot.setStatus(AppointmentSlot.Status.ACTIVE);
@@ -47,10 +52,10 @@ public class AppointmentSlotService {
     }
 
     public void cancel(Long slotId) {
-        AppointmentSlot s = slots.findById(slotId)
+        AppointmentSlot slot = slots.findById(slotId)
                 .orElseThrow(() -> new IllegalArgumentException("Slot not found"));
         
-        s.setStatus(AppointmentSlot.Status.CANCELLED);
-        slots.save(s);
+        slot.setStatus(AppointmentSlot.Status.CANCELLED);
+        slots.save(slot);
     }
 }
