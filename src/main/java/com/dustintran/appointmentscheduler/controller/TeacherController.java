@@ -10,6 +10,7 @@ import com.dustintran.appointmentscheduler.service.AppointmentSlotService;
 import com.dustintran.appointmentscheduler.service.CourseSectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class TeacherController {
     private final StudentGroupRepository groupRepository;
 
     @GetMapping("/teacher/slots")
-    public String list(Model model) {
+    public String list(Model model, Authentication auth) {
         List<AppointmentSlot> slots = slotService.upcomingActiveList();
         List<Long> slotIds = slots.stream().map(AppointmentSlot::getId).toList();
         Map<Long, Long> bookingCounts = appointmentService.countBookingsForSlots(slotIds);
@@ -35,7 +36,7 @@ public class TeacherController {
         model.addAttribute("slots", slots);
         model.addAttribute("bookingCounts", bookingCounts);
         model.addAttribute("displayName", auth.getName());
-        
+
         return "teacher-slots";
     }
 
