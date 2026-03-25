@@ -4,15 +4,19 @@ on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Make mvnw executable
+        run: chmod +x mvnw
 
       - name: Set up Java
         uses: actions/setup-java@v4
